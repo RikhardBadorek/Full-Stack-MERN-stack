@@ -38,10 +38,23 @@ const deleteGoal = async (goalId, token) => {
     return response.data
 }
 
+const toggleAchieved = async (goalId, token) => {
+    const config = {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }
+
+    const response = await axios.put(API_URL + 'toggle/' + goalId, {}, config)
+
+    return response.data
+}
+
 const goalService = {
     createGoal,
     getGoals,
-    deleteGoal
+    deleteGoal,
+    toggleAchieved
 }
 
 export default goalService

@@ -30,6 +30,9 @@ function Dashboard() {
     }
   }, [user, navigate, isError, message, dispatch])
 
+  const goalsAchieved = goals.filter(goal => goal.completed)
+  const goalsNotAchieved = goals.filter(goal => !goal.completed)
+
   if(isLoading) {
     return <Spinner/>
   }
@@ -44,13 +47,23 @@ function Dashboard() {
       <GoalForm/>
 
       <section className='content'>
+        <h2>Goals</h2>
         {goals.length > 0 ? (
           <div className="goals">
-            {goals.map(goal => (
+            {goalsNotAchieved.map(goal => (
               <GoalItem key={goal._id} goal={goal} />
             ))}
           </div>
-        ) : (<h3>You have not set any goals yet</h3>)}
+        ) : (<h3>You dont have unachieved goals</h3>)}
+
+      <h2>Goals Achieved</h2>
+        {goals.length > 0 ? (
+          <div className="goals">
+            {goalsAchieved.map(goal => (
+              <GoalItem key={goal._id} goal={goal} />
+            ))}
+          </div>
+        ) : (<h3>You dont have achieved goals</h3>)}
       </section>
     </>
   )

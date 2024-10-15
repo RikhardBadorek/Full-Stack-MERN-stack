@@ -69,9 +69,29 @@ const deleteGoal = asyncHandler (async (req, res) => {
     res.status(200).json({ id: req.params.id })
 })
 
+const toggleAchieved = asyncHandler (async (req, res) => {
+    const goal = await Goal.findById(req.params.id)
+
+    if(!goal) {
+        res.status(400)
+        throw new Error('Goal not found')
+    }
+
+    if(goal.user.toString() !== req.user.id) {
+        res.status(401)
+        throw new Error('User not authorized')
+    }
+
+    goal.completed = !goal.completed
+    const updateGoal = await goal.save()
+
+    res.status(200).json(updateGoal)
+})
+
 module.exports = {
     getGoals,
     setGoal,
     updateGoal,
-    deleteGoal
+    deleteGoal,
+    toggleAchieved
 }
